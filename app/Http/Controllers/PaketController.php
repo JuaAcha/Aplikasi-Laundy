@@ -51,12 +51,28 @@ class PaketController extends Controller
      */
     public function store(Request $request)
     {
-        Paket::create([
-            'id_outlet' => $request->id_outlet,
-            'jenis' => $request->jenis,
-            'nama_paket' => $request->nama_paket,
-            'harga' => $request->harga,
+        // Paket::create([
+        //     'id_outlet' => $request->id_outlet,
+        //     'jenis' => $request->jenis,
+        //     'nama_paket' => $request->nama_paket,
+        //     'harga' => $request->harga,
+        // ]);
+
+        $this->validate($request , [
+            'id_outlet' => 'required',
+            'jenis' => 'required',
+            'nama_paket' => 'required|alpha_dash|max:255',
+            'harga' => 'required|numeric'
         ]);
+
+        Paket::create($request->all());
+
+        // $validate = $request->validate([
+        //     'id_outlet' => ['required'],
+        //     'jenis' => ['required'],
+        //     'nama_paket' => ['required|apha'],
+        //     'harga' => ['required|numeric']
+        // ]);
 
         return redirect()->route('paket.index')->with('message', 'Berhasil Menambahkan Paket!');
     }
